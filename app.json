@@ -1,0 +1,39 @@
+{
+  "expo": {
+    "name": "Daily Reset",
+    "slug": "daily-reset",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "dailyreset",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.example.dailyreset",
+      "infoPlist": {
+        "NSPhotoLibraryAddUsageDescription": "Daily Reset saves achievement cards to your photo library when you choose Save."
+      }
+    },
+    "android": {
+      "package": "com.example.dailyreset",
+      "permissions": [
+        "POST_NOTIFICATIONS",
+        "READ_MEDIA_IMAGES"
+      ],
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#147AFF"
+      }
+    },
+    "web": {
+      "bundler": "metro",
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-notifications",
+      "expo-media-library",
+      "expo-web-browser"
+    ]
+  }
+}
