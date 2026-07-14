@@ -71,6 +71,8 @@ const emptyHabit = {
   reminderMinute: "0"
 };
 
+const placeholderTextColor = "#738199";
+
 export default function App() {
   const [state, setState] = useState(initialState);
   const [ready, setReady] = useState(false);
@@ -157,7 +159,7 @@ export default function App() {
   if (!user) {
     return (
       <SafeAreaView style={styles.safe}>
-        <StatusBar barStyle="default" />
+        <StatusBar barStyle="light-content" />
         <AuthScreen
           error={authError}
           setError={setAuthError}
@@ -175,7 +177,7 @@ export default function App() {
   if (!profile || !profile.onboardingCompleted) {
     return (
       <SafeAreaView style={styles.safe}>
-        <StatusBar barStyle="default" />
+        <StatusBar barStyle="light-content" />
         <Onboarding
           step={onboardingStep}
           setStep={setOnboardingStep}
@@ -192,7 +194,7 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.safe}>
-      <StatusBar barStyle="default" />
+      <StatusBar barStyle="light-content" />
       <View style={styles.shell}>
         <ScrollView contentContainerStyle={styles.screen}>
           {tab === "today" && (
@@ -475,8 +477,8 @@ function AuthScreen({ error, setError, onAuthenticated }) {
       {mode === "email" && (
         <View style={styles.card}>
           <Text style={styles.cardTitle}>{isRegistering ? "Create account" : "Welcome back"}</Text>
-          <TextInput style={styles.input} autoCapitalize="none" keyboardType="email-address" placeholder="Email" value={email} onChangeText={setEmail} />
-          <TextInput style={styles.input} secureTextEntry placeholder="Password" value={password} onChangeText={setPassword} />
+          <TextInput style={styles.input} placeholderTextColor={placeholderTextColor} autoCapitalize="none" keyboardType="email-address" placeholder="Email" value={email} onChangeText={setEmail} />
+          <TextInput style={styles.input} placeholderTextColor={placeholderTextColor} secureTextEntry placeholder="Password" value={password} onChangeText={setPassword} />
           <Pressable
             style={[styles.primaryButton, busy && styles.disabledButton]}
             disabled={busy}
@@ -503,8 +505,8 @@ function AuthScreen({ error, setError, onAuthenticated }) {
       {mode === "phone" && (
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Phone verification</Text>
-          <TextInput style={styles.input} keyboardType="phone-pad" placeholder="+15551234567" value={phone} onChangeText={setPhone} />
-          {otpSent && <TextInput style={styles.input} keyboardType="number-pad" placeholder="Verification code" value={otp} onChangeText={setOtp} />}
+          <TextInput style={styles.input} placeholderTextColor={placeholderTextColor} keyboardType="phone-pad" placeholder="+15551234567" value={phone} onChangeText={setPhone} />
+          {otpSent && <TextInput style={styles.input} placeholderTextColor={placeholderTextColor} keyboardType="number-pad" placeholder="Verification code" value={otp} onChangeText={setOtp} />}
           <Pressable
             style={[styles.primaryButton, busy && styles.disabledButton]}
             disabled={busy}
@@ -805,7 +807,7 @@ function CheckInModal({ habit, value, setValue, onClose, onSave }) {
         <View style={styles.modalCard}>
           <Text style={styles.h2}>Check In</Text>
           <Text style={styles.muted}>{habit?.title}</Text>
-          <TextInput style={styles.input} keyboardType="numeric" value={value} onChangeText={setValue} />
+          <TextInput style={styles.input} placeholderTextColor={placeholderTextColor} keyboardType="numeric" value={value} onChangeText={setValue} />
           <View style={styles.row}>
             <Pressable style={styles.secondaryButton} onPress={onClose}><Text style={styles.secondaryButtonText}>Cancel</Text></Pressable>
             <Pressable style={styles.primaryButton} onPress={onSave}><Text style={styles.primaryButtonText}>Save</Text></Pressable>
@@ -869,7 +871,7 @@ function HabitFields({ draft, setDraft, includeTitle }) {
   return (
     <View>
       {includeTitle && (
-        <TextInput style={styles.input} placeholder="Read 20 pages" value={draft.title} onChangeText={(title) => setDraft({ ...draft, title })} />
+        <TextInput style={styles.input} placeholderTextColor={placeholderTextColor} placeholder="Read 20 pages" value={draft.title} onChangeText={(title) => setDraft({ ...draft, title })} />
       )}
       <Text style={styles.sectionTitle}>Theme</Text>
       <View style={styles.grid}>
@@ -896,7 +898,7 @@ function TargetFields({ draft, setDraft }) {
         {units.map((unit) => <SmallButton key={unit.key} label={unit.label} active={draft.unit === unit.key} onPress={() => setDraft({ ...draft, unit: unit.key, targetValue: defaultTarget(unit.key) })} />)}
       </View>
       {unitFor(draft.unit).needsValue && (
-        <TextInput style={styles.input} keyboardType="numeric" value={String(draft.targetValue)} onChangeText={(targetValue) => setDraft({ ...draft, targetValue })} />
+        <TextInput style={styles.input} placeholderTextColor={placeholderTextColor} keyboardType="numeric" value={String(draft.targetValue)} onChangeText={(targetValue) => setDraft({ ...draft, targetValue })} />
       )}
     </View>
   );
@@ -913,9 +915,9 @@ function ReminderFields({ draft, setDraft }) {
       />
       {draft.reminderEnabled && (
         <View style={styles.row}>
-          <TextInput style={[styles.input, styles.timeInput]} keyboardType="numeric" value={String(draft.reminderHour)} onChangeText={(reminderHour) => setDraft({ ...draft, reminderHour })} />
+          <TextInput style={[styles.input, styles.timeInput]} placeholderTextColor={placeholderTextColor} keyboardType="numeric" value={String(draft.reminderHour)} onChangeText={(reminderHour) => setDraft({ ...draft, reminderHour })} />
           <Text style={styles.h2}>:</Text>
-          <TextInput style={[styles.input, styles.timeInput]} keyboardType="numeric" value={String(draft.reminderMinute)} onChangeText={(reminderMinute) => setDraft({ ...draft, reminderMinute })} />
+          <TextInput style={[styles.input, styles.timeInput]} placeholderTextColor={placeholderTextColor} keyboardType="numeric" value={String(draft.reminderMinute)} onChangeText={(reminderMinute) => setDraft({ ...draft, reminderMinute })} />
         </View>
       )}
     </View>
@@ -1038,7 +1040,7 @@ function SegmentButton({ label, active, onPress }) {
 function SmallButton({ label, onPress, active, danger }) {
   return (
     <Pressable style={[styles.smallButton, active && styles.smallButtonActive, danger && styles.smallButtonDanger]} onPress={onPress}>
-      <Text style={[styles.smallButtonText, (active || danger) && styles.smallButtonTextActive]}>{label}</Text>
+      <Text style={[styles.smallButtonText, active && styles.smallButtonTextActive, danger && styles.smallButtonDangerText]}>{label}</Text>
     </Pressable>
   );
 }
@@ -1101,86 +1103,128 @@ function confirmAction(title, message, onConfirm) {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: "#F7F8FA" },
-  shell: { flex: 1 },
-  screen: { padding: 18, paddingBottom: 108, gap: 14 },
-  authScreen: { padding: 20, paddingBottom: 60, gap: 16 },
-  loading: { marginTop: 80, textAlign: "center", fontSize: 28, fontWeight: "800", color: "#111827" },
-  onboarding: { padding: 20, paddingBottom: 60, gap: 18 },
-  appName: { marginTop: 18, fontSize: 34, fontWeight: "900", color: "#111827" },
-  slogan: { fontSize: 16, color: "#6B7280", lineHeight: 22 },
-  notice: { padding: 12, borderRadius: 8, borderWidth: 1, borderColor: "#F59E0B", backgroundColor: "#FFFBEB" },
-  noticeText: { color: "#92400E", fontWeight: "700", lineHeight: 20 },
-  progressTrack: { height: 8, backgroundColor: "#E5E7EB", borderRadius: 999, overflow: "hidden" },
-  progressFill: { height: 8, backgroundColor: "#147AFF" },
+  safe: { flex: 1, backgroundColor: "#070A12" },
+  shell: { flex: 1, backgroundColor: "#070A12" },
+  screen: { width: "100%", maxWidth: 760, alignSelf: "center", padding: 18, paddingBottom: 112, gap: 14 },
+  authScreen: { width: "100%", maxWidth: 520, alignSelf: "center", padding: 22, paddingBottom: 64, gap: 16 },
+  loading: { marginTop: 80, textAlign: "center", fontSize: 28, fontWeight: "800", color: "#F6F8FF" },
+  onboarding: { width: "100%", maxWidth: 680, alignSelf: "center", padding: 20, paddingBottom: 64, gap: 18 },
+  appName: { marginTop: 18, fontSize: 36, lineHeight: 40, fontWeight: "900", color: "#F6F8FF" },
+  slogan: { fontSize: 16, color: "#9EA9BC", lineHeight: 22 },
+  notice: { padding: 12, borderRadius: 12, borderWidth: 1, borderColor: "rgba(255,193,91,0.34)", backgroundColor: "rgba(255,193,91,0.1)" },
+  noticeText: { color: "#FFD58A", fontWeight: "700", lineHeight: 20 },
+  progressTrack: { height: 8, backgroundColor: "#182033", borderRadius: 999, overflow: "hidden" },
+  progressFill: { height: 8, backgroundColor: "#57A6FF" },
   header: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 8, gap: 12 },
-  h1: { fontSize: 30, lineHeight: 34, fontWeight: "900", color: "#111827" },
-  h2: { fontSize: 22, fontWeight: "800", color: "#111827" },
-  muted: { color: "#6B7280", lineHeight: 21 },
-  errorText: { color: "#B91C1C", fontWeight: "800", lineHeight: 20 },
-  sectionTitle: { marginTop: 12, marginBottom: 8, fontSize: 17, fontWeight: "800", color: "#111827" },
+  h1: { fontSize: 31, lineHeight: 35, fontWeight: "900", color: "#F6F8FF" },
+  h2: { fontSize: 22, fontWeight: "800", color: "#F6F8FF" },
+  muted: { color: "#9EA9BC", lineHeight: 21 },
+  errorText: { color: "#FF8C8C", fontWeight: "800", lineHeight: 20 },
+  sectionTitle: { marginTop: 12, marginBottom: 8, fontSize: 17, fontWeight: "800", color: "#F6F8FF" },
   grid: { flexDirection: "row", flexWrap: "wrap", gap: 10 },
-  segment: { flexDirection: "row", padding: 4, borderRadius: 10, backgroundColor: "#E5E7EB", gap: 4 },
-  segmentButton: { flex: 1, minHeight: 42, alignItems: "center", justifyContent: "center", borderRadius: 8 },
-  segmentButtonActive: { backgroundColor: "#FFFFFF" },
-  segmentText: { color: "#6B7280", fontWeight: "900" },
-  segmentTextActive: { color: "#111827" },
-  avatarPreview: { alignItems: "center", justifyContent: "center", padding: 14, borderRadius: 8, backgroundColor: "#FFFFFF", borderWidth: 1, borderColor: "#E5E7EB", marginVertical: 12 },
-  option: { width: "47.8%", minHeight: 58, justifyContent: "center", alignItems: "center", gap: 6, padding: 10, borderWidth: 1, borderColor: "#D1D5DB", borderRadius: 8, backgroundColor: "#FFFFFF" },
-  optionSelected: { backgroundColor: "#111827", borderColor: "#111827" },
-  optionText: { textAlign: "center", fontWeight: "800", color: "#111827" },
-  optionTextSelected: { color: "#FFFFFF" },
-  swatch: { width: 26, height: 26, borderRadius: 13, borderWidth: 1, borderColor: "rgba(17,24,39,0.18)" },
-  choice: { width: "47.8%", minHeight: 82, justifyContent: "center", padding: 12, borderWidth: 1, borderColor: "#D1D5DB", borderRadius: 8, backgroundColor: "#FFFFFF" },
-  choiceText: { textAlign: "center", fontWeight: "900", color: "#111827" },
-  choiceDetail: { marginTop: 4, textAlign: "center", color: "#6B7280", fontSize: 12, fontWeight: "800" },
+  segment: { flexDirection: "row", padding: 4, borderRadius: 14, backgroundColor: "#101728", borderWidth: 1, borderColor: "#1E2A44", gap: 4 },
+  segmentButton: { flex: 1, minHeight: 42, alignItems: "center", justifyContent: "center", borderRadius: 10 },
+  segmentButtonActive: { backgroundColor: "#1B2740" },
+  segmentText: { color: "#9EA9BC", fontWeight: "900" },
+  segmentTextActive: { color: "#F6F8FF" },
+  avatarPreview: {
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 14,
+    borderRadius: 16,
+    backgroundColor: "#0F1727",
+    borderWidth: 1,
+    borderColor: "#24314D",
+    marginVertical: 12,
+    shadowColor: "#000",
+    shadowOpacity: 0.28,
+    shadowRadius: 18
+  },
+  option: { width: "47.8%", minHeight: 58, justifyContent: "center", alignItems: "center", gap: 6, padding: 10, borderWidth: 1, borderColor: "#263553", borderRadius: 12, backgroundColor: "#101728" },
+  optionSelected: { backgroundColor: "#57A6FF", borderColor: "#57A6FF" },
+  optionText: { textAlign: "center", fontWeight: "800", color: "#DCE6F8" },
+  optionTextSelected: { color: "#06101F" },
+  swatch: { width: 26, height: 26, borderRadius: 13, borderWidth: 1, borderColor: "rgba(246,248,255,0.22)" },
+  choice: { width: "47.8%", minHeight: 82, justifyContent: "center", padding: 12, borderWidth: 1, borderColor: "#263553", borderRadius: 14, backgroundColor: "#101728" },
+  choiceText: { textAlign: "center", fontWeight: "900", color: "#F6F8FF" },
+  choiceDetail: { marginTop: 4, textAlign: "center", color: "#9EA9BC", fontSize: 12, fontWeight: "800" },
   choiceTextSelected: { color: "#FFFFFF" },
-  input: { marginVertical: 8, borderWidth: 1, borderColor: "#D1D5DB", borderRadius: 8, paddingHorizontal: 14, paddingVertical: 12, backgroundColor: "#FFFFFF", fontSize: 16 },
+  input: { marginVertical: 8, borderWidth: 1, borderColor: "#263553", borderRadius: 12, paddingHorizontal: 14, paddingVertical: 12, backgroundColor: "#0D1424", color: "#F6F8FF", fontSize: 16 },
   timeInput: { width: 86, textAlign: "center" },
-  heroPanel: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", padding: 18, marginBottom: 12, borderRadius: 8, backgroundColor: "#FFFFFF", borderWidth: 1, borderColor: "#E5E7EB" },
-  heroTitle: { fontSize: 32, fontWeight: "900", color: "#111827" },
-  card: { padding: 16, marginBottom: 12, borderRadius: 8, backgroundColor: "#FFFFFF", borderWidth: 1, borderColor: "#E5E7EB", gap: 10 },
-  cardTitle: { fontSize: 18, fontWeight: "800", color: "#111827" },
+  heroPanel: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 18,
+    marginBottom: 12,
+    borderRadius: 18,
+    backgroundColor: "#0F1727",
+    borderWidth: 1,
+    borderColor: "#263553",
+    shadowColor: "#57A6FF",
+    shadowOpacity: 0.16,
+    shadowRadius: 24
+  },
+  heroTitle: { fontSize: 34, lineHeight: 38, fontWeight: "900", color: "#F6F8FF" },
+  card: { padding: 16, marginBottom: 12, borderRadius: 16, backgroundColor: "#0F1727", borderWidth: 1, borderColor: "#222F4A", gap: 10 },
+  cardTitle: { fontSize: 18, fontWeight: "800", color: "#F6F8FF" },
   statRow: { flexDirection: "row", gap: 10, marginBottom: 12 },
-  metric: { flex: 1, minWidth: 126, padding: 14, borderRadius: 8, backgroundColor: "#FFFFFF", borderWidth: 1, borderColor: "#E5E7EB" },
+  metric: { flex: 1, minWidth: 126, padding: 14, borderRadius: 14, backgroundColor: "#101728", borderWidth: 1, borderColor: "#263553" },
   metricCompact: { padding: 10, minWidth: 0 },
-  metricLabel: { color: "#6B7280", fontSize: 12, fontWeight: "700" },
-  metricValue: { marginTop: 5, fontSize: 24, fontWeight: "900", color: "#111827" },
-  primaryButton: { flex: 1, alignItems: "center", justifyContent: "center", minHeight: 46, paddingHorizontal: 16, borderRadius: 8, backgroundColor: "#147AFF" },
-  primaryButtonText: { color: "#FFFFFF", fontWeight: "800" },
-  completedButton: { backgroundColor: "#2FB344" },
+  metricLabel: { color: "#9EA9BC", fontSize: 12, fontWeight: "700" },
+  metricValue: { marginTop: 5, fontSize: 25, fontWeight: "900", color: "#F6F8FF" },
+  primaryButton: { flex: 1, alignItems: "center", justifyContent: "center", minHeight: 46, paddingHorizontal: 16, borderRadius: 12, backgroundColor: "#57A6FF" },
+  primaryButtonText: { color: "#06101F", fontWeight: "900" },
+  completedButton: { backgroundColor: "#39D98A" },
   disabledButton: { opacity: 0.45 },
-  secondaryButton: { flex: 1, alignItems: "center", justifyContent: "center", minHeight: 46, paddingHorizontal: 16, borderRadius: 8, backgroundColor: "#E5E7EB" },
-  secondaryButtonText: { color: "#111827", fontWeight: "800" },
-  smallButton: { paddingVertical: 9, paddingHorizontal: 12, borderRadius: 8, backgroundColor: "#E5E7EB" },
-  smallButtonActive: { backgroundColor: "#147AFF" },
-  smallButtonDanger: { backgroundColor: "#DC2626" },
-  smallButtonText: { color: "#111827", fontWeight: "800", fontSize: 13 },
-  smallButtonTextActive: { color: "#FFFFFF" },
-  dangerButton: { alignItems: "center", padding: 14, borderRadius: 8, backgroundColor: "#FEE2E2" },
-  dangerButtonText: { color: "#B91C1C", fontWeight: "900" },
+  secondaryButton: { flex: 1, alignItems: "center", justifyContent: "center", minHeight: 46, paddingHorizontal: 16, borderRadius: 12, backgroundColor: "#182033", borderWidth: 1, borderColor: "#263553" },
+  secondaryButtonText: { color: "#F6F8FF", fontWeight: "800" },
+  smallButton: { paddingVertical: 9, paddingHorizontal: 12, borderRadius: 10, backgroundColor: "#182033", borderWidth: 1, borderColor: "#263553" },
+  smallButtonActive: { backgroundColor: "#57A6FF", borderColor: "#57A6FF" },
+  smallButtonDanger: { backgroundColor: "rgba(255,107,107,0.16)", borderColor: "rgba(255,107,107,0.4)" },
+  smallButtonText: { color: "#DCE6F8", fontWeight: "800", fontSize: 13 },
+  smallButtonTextActive: { color: "#06101F" },
+  smallButtonDangerText: { color: "#FFB4B4" },
+  dangerButton: { alignItems: "center", padding: 14, borderRadius: 12, backgroundColor: "rgba(255,107,107,0.14)", borderWidth: 1, borderColor: "rgba(255,107,107,0.38)" },
+  dangerButtonText: { color: "#FF9D9D", fontWeight: "900" },
   linkButton: { alignItems: "center", padding: 12 },
-  linkText: { color: "#147AFF", fontWeight: "900" },
+  linkText: { color: "#57A6FF", fontWeight: "900" },
   row: { flexDirection: "row", alignItems: "center", gap: 10 },
   rowWrap: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
   rowBetween: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12 },
   flex: { flex: 1 },
-  streak: { fontWeight: "900", color: "#D97706" },
-  empty: { alignItems: "center", padding: 24, borderRadius: 8, backgroundColor: "#FFFFFF", borderWidth: 1, borderColor: "#E5E7EB", gap: 12 },
-  tabBar: { position: "absolute", left: 12, right: 12, bottom: 12, flexDirection: "row", padding: 8, borderRadius: 18, backgroundColor: "#FFFFFF", borderWidth: 1, borderColor: "#E5E7EB", shadowColor: "#000", shadowOpacity: 0.08, shadowRadius: 12 },
-  tabItem: { flex: 1, alignItems: "center", justifyContent: "center", minHeight: 42, paddingVertical: 8, borderRadius: 12 },
-  tabActive: { backgroundColor: "#EAF2FF" },
-  tabLabel: { color: "#6B7280", fontSize: 11, fontWeight: "800" },
-  tabLabelActive: { color: "#147AFF" },
+  streak: { fontWeight: "900", color: "#FFD58A" },
+  empty: { alignItems: "center", padding: 24, borderRadius: 16, backgroundColor: "#0F1727", borderWidth: 1, borderColor: "#222F4A", gap: 12 },
+  tabBar: {
+    position: "absolute",
+    left: 12,
+    right: 12,
+    bottom: 12,
+    maxWidth: 760,
+    alignSelf: "center",
+    flexDirection: "row",
+    padding: 8,
+    borderRadius: 20,
+    backgroundColor: "#0B1120",
+    borderWidth: 1,
+    borderColor: "#263553",
+    shadowColor: "#000",
+    shadowOpacity: 0.35,
+    shadowRadius: 20
+  },
+  tabItem: { flex: 1, alignItems: "center", justifyContent: "center", minHeight: 42, paddingVertical: 8, borderRadius: 14 },
+  tabActive: { backgroundColor: "#17233A" },
+  tabLabel: { color: "#7F8CA4", fontSize: 11, fontWeight: "800" },
+  tabLabelActive: { color: "#57A6FF" },
   calendarRow: { flexDirection: "row", gap: 6, marginTop: 10 },
-  dayDot: { width: 32, height: 32, borderRadius: 8, alignItems: "center", justifyContent: "center", backgroundColor: "#F3F4F6" },
-  dayDone: { backgroundColor: "#2FB344" },
-  dayText: { fontSize: 12, fontWeight: "800", color: "#111827" },
-  badgeIcon: { width: 48, fontSize: 20, fontWeight: "900", textAlign: "center", color: "#111827" },
-  badgeLevel: { marginTop: 4, color: "#147AFF", fontSize: 12, fontWeight: "800" },
-  modalBackdrop: { flex: 1, backgroundColor: "rgba(17,24,39,0.45)", alignItems: "center", justifyContent: "center", padding: 20 },
-  modalCard: { width: "100%", maxWidth: 420, padding: 18, borderRadius: 8, backgroundColor: "#FFFFFF", gap: 10 },
-  shareCard: { minHeight: 450, borderRadius: 18, padding: 28, justifyContent: "space-between", alignItems: "center" },
+  dayDot: { width: 32, height: 32, borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: "#182033", borderWidth: 1, borderColor: "#263553" },
+  dayDone: { backgroundColor: "#39D98A", borderColor: "#39D98A" },
+  dayText: { fontSize: 12, fontWeight: "800", color: "#F6F8FF" },
+  badgeIcon: { width: 48, fontSize: 20, fontWeight: "900", textAlign: "center", color: "#F6F8FF" },
+  badgeLevel: { marginTop: 4, color: "#57A6FF", fontSize: 12, fontWeight: "800" },
+  modalBackdrop: { flex: 1, backgroundColor: "rgba(3,7,18,0.78)", alignItems: "center", justifyContent: "center", padding: 20 },
+  modalCard: { width: "100%", maxWidth: 420, padding: 18, borderRadius: 16, backgroundColor: "#0F1727", borderWidth: 1, borderColor: "#263553", gap: 10 },
+  shareCard: { minHeight: 450, borderRadius: 20, padding: 28, justifyContent: "space-between", alignItems: "center" },
   shareEyebrow: { color: "#FFFFFF", fontWeight: "800", fontSize: 18 },
   shareIcon: { color: "#FFFFFF", fontSize: 76, fontWeight: "900" },
   shareTitle: { color: "#FFFFFF", fontSize: 34, fontWeight: "900", textAlign: "center" },
@@ -1188,5 +1232,5 @@ const styles = StyleSheet.create({
   shareMeta: { color: "#FFFFFF", fontWeight: "800" },
   shareBrand: { color: "#FFFFFF", fontSize: 20, fontWeight: "900" },
   shareSlogan: { color: "#FFFFFF", opacity: 0.9 },
-  assetText: { color: "#6B7280", textAlign: "center", fontSize: 12, fontWeight: "700" }
+  assetText: { color: "#9EA9BC", textAlign: "center", fontSize: 12, fontWeight: "700" }
 });

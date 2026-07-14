@@ -57,10 +57,10 @@ function tierDensity(tier) {
 }
 
 function backgroundFor(theme) {
-  if (theme === "fitness") return "#FFF1E7";
-  if (theme === "reading") return "#EAF2FF";
-  if (theme === "study") return "#F1EAFF";
-  return "#E8F7EF";
+  if (theme === "fitness") return "#231321";
+  if (theme === "reading") return "#0B1B33";
+  if (theme === "study") return "#17152F";
+  return "#0F261C";
 }
 
 const styles = StyleSheet.create({
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     padding: 26,
     justifyContent: "space-between",
     borderWidth: 1,
-    borderColor: "rgba(17,24,39,0.08)"
+    borderColor: "rgba(255,255,255,0.16)"
   },
   patternLayer: { ...StyleSheet.absoluteFillObject },
   spark: {
@@ -82,23 +82,23 @@ const styles = StyleSheet.create({
     width: 52,
     height: 52,
     borderRadius: 14,
-    backgroundColor: "#111827"
+    backgroundColor: "#FFFFFF"
   },
   posterHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
-  brand: { color: "#111827", fontSize: 18, fontWeight: "900" },
+  brand: { color: "#FFFFFF", fontSize: 18, fontWeight: "900" },
   tier: {
     overflow: "hidden",
     borderRadius: 999,
     paddingHorizontal: 12,
     paddingVertical: 7,
-    backgroundColor: "rgba(255,255,255,0.72)",
-    color: "#111827",
+    backgroundColor: "rgba(255,255,255,0.14)",
+    color: "#FFFFFF",
     fontWeight: "900"
   },
   avatarStage: { alignItems: "center", justifyContent: "center", flex: 1 },
   copy: { gap: 6 },
-  theme: { color: "#475569", fontWeight: "900", textTransform: "uppercase", letterSpacing: 0, fontSize: 12 },
-  title: { color: "#111827", fontSize: 36, lineHeight: 40, fontWeight: "900" },
-  streak: { color: "#111827", fontSize: 21, fontWeight: "900" },
-  meta: { color: "#475569", fontSize: 15, fontWeight: "700" }
+  theme: { color: "rgba(255,255,255,0.72)", fontWeight: "900", textTransform: "uppercase", letterSpacing: 0, fontSize: 12 },
+  title: { color: "#FFFFFF", fontSize: 36, lineHeight: 40, fontWeight: "900" },
+  streak: { color: "#FFFFFF", fontSize: 21, fontWeight: "900" },
+  meta: { color: "rgba(255,255,255,0.72)", fontSize: 15, fontWeight: "700" }
 });
