@@ -81,7 +81,7 @@ export const posterBackgrounds = [
 ];
 
 export const visualReferenceNote =
-  "The base bodies are original templates inspired by broad personality-illustration language: posture, silhouette, and character energy. They do not copy official MBTI or 16Personalities artwork.";
+  "The companions are original Streakly mascots built from soft shapes, theme outfits, and reusable avatar recipes.";
 
 export function avatarPartByKey(parts, key) {
   return parts.find((part) => part.key === key) || parts[0];

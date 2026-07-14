@@ -10,6 +10,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  useWindowDimensions,
   View
 } from "react-native";
 import { AvatarFigure } from "./components/AvatarFigure";
@@ -74,6 +75,7 @@ const emptyHabit = {
 const placeholderTextColor = "#738199";
 
 export default function App() {
+  const { width, height } = useWindowDimensions();
   const [state, setState] = useState(initialState);
   const [ready, setReady] = useState(false);
   const [authReady, setAuthReady] = useState(false);
@@ -147,6 +149,7 @@ export default function App() {
 
   const activeHabits = useMemo(() => state.habits.filter((habit) => !habit.isArchived), [state.habits]);
   const avatarRecipe = normalizeAvatarRecipe(profile?.avatarRecipe || avatarDraft);
+  const shouldCenterMain = width >= 900 && height >= 760;
 
   if (!ready || !authReady) {
     return (
@@ -196,7 +199,7 @@ export default function App() {
     <SafeAreaView style={styles.safe}>
       <StatusBar barStyle="light-content" />
       <View style={styles.shell}>
-        <ScrollView contentContainerStyle={styles.screen}>
+        <ScrollView contentContainerStyle={[styles.screen, shouldCenterMain && styles.screenCentered]}>
           {tab === "today" && (
             <TodayScreen
               habits={activeHabits}
@@ -236,12 +239,14 @@ export default function App() {
           )}
         </ScrollView>
 
-        <View style={styles.tabBar}>
-          {tabs.map(([key, label]) => (
-            <Pressable key={key} onPress={() => setTab(key)} style={[styles.tabItem, tab === key && styles.tabActive]}>
-              <Text style={[styles.tabLabel, tab === key && styles.tabLabelActive]}>{label}</Text>
-            </Pressable>
-          ))}
+        <View style={styles.tabBarShell}>
+          <View style={styles.tabBar}>
+            {tabs.map(([key, label]) => (
+              <Pressable key={key} onPress={() => setTab(key)} style={[styles.tabItem, tab === key && styles.tabActive]}>
+                <Text style={[styles.tabLabel, tab === key && styles.tabLabelActive]}>{label}</Text>
+              </Pressable>
+            ))}
+          </View>
         </View>
       </View>
 
@@ -543,7 +548,7 @@ function Onboarding({ step, setStep, draft, setDraft, avatarDraft, setAvatarDraf
 
       {step === 0 && (
         <View>
-          <Header title="Choose a base body" subtitle="Original silhouettes inspired by personality illustration language." />
+          <Header title="Choose a base body" subtitle="Original Streakly companions with softer shapes and motion." />
           <Text style={styles.muted}>{visualReferenceNote}</Text>
           <View style={styles.avatarPreview}><AvatarFigure recipe={avatarDraft} theme={draft.category} size={210} /></View>
           <OptionGrid
@@ -1105,7 +1110,8 @@ function confirmAction(title, message, onConfirm) {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: "#070A12" },
   shell: { flex: 1, backgroundColor: "#070A12" },
-  screen: { width: "100%", maxWidth: 760, alignSelf: "center", padding: 18, paddingBottom: 112, gap: 14 },
+  screen: { width: "100%", maxWidth: 760, minHeight: "100%", flexGrow: 1, alignSelf: "center", padding: 18, paddingTop: 42, paddingBottom: 112, gap: 14 },
+  screenCentered: { justifyContent: "center" },
   authScreen: { width: "100%", maxWidth: 520, alignSelf: "center", padding: 22, paddingBottom: 64, gap: 16 },
   loading: { marginTop: 80, textAlign: "center", fontSize: 28, fontWeight: "800", color: "#F6F8FF" },
   onboarding: { width: "100%", maxWidth: 680, alignSelf: "center", padding: 20, paddingBottom: 64, gap: 18 },
@@ -1195,13 +1201,17 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   streak: { fontWeight: "900", color: "#FFD58A" },
   empty: { alignItems: "center", padding: 24, borderRadius: 16, backgroundColor: "#0F1727", borderWidth: 1, borderColor: "#222F4A", gap: 12 },
-  tabBar: {
+  tabBarShell: {
     position: "absolute",
-    left: 12,
-    right: 12,
+    left: 0,
+    right: 0,
     bottom: 12,
+    alignItems: "center",
+    paddingHorizontal: 12
+  },
+  tabBar: {
+    width: "100%",
     maxWidth: 760,
-    alignSelf: "center",
     flexDirection: "row",
     padding: 8,
     borderRadius: 20,
